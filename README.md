@@ -4,7 +4,29 @@ This is an additional set of rules for the PHP Code Sniffer.
 
 ## Installation
 
-installation instructions.
+This package should be installed through composer.
+
+Inside your project ```composer.json``` file add the package to the require-dev list.
+
+```
+"require-dev": {
+    "phpunit/phpunit": "4.5.*",
+    "ve-interactive/php-sniffer-rules": "dev-master"
+},
+```
+
+Because the project is currently inside a private repository the repository itself needs to be added to the composer file.
+
+```
+"repositories": [
+    {
+        "type": "vcs",
+        "url": "git@github.com:ve-interactive/PhpSnifferRules.git"
+    }
+],
+```
+
+You will than have to create a new ```ruleset.xml``` file in the root of your project
 
 ```
 <?xml version="1.0"?>
@@ -17,6 +39,27 @@ installation instructions.
 </ruleset>
 ```
 
+If you want you can disable some of the rules that come with the package and enable other ones:
+
+```
+<?xml version="1.0"?>
+<ruleset name="REDACTED">
+    <description>REDACTED</description>
+
+    <!-- Ve Standards -->
+    <rule ref="vendor/ve-interactive/php-sniffer-rules/Ve/ruleset.xml">
+        <!-- remove rule you don't want -->
+        <exclude name="Generic.WhiteSpace.DisallowSpaceIndent"/>
+    </rule>
+    
+    <!-- add rule you need -->
+    <rule name="Generic.WhiteSpace.DisallowTabIndent"/>
+    
+    <!-- do not check this file at all -->
+    <exclude-pattern>*/Redacted.php</exclude-pattern>
+
+</ruleset>
+```
 
 ## Rules Details
 
