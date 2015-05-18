@@ -61,6 +61,15 @@ If you want you can disable some of the rules that come with the package and ena
 </ruleset>
 ```
 
+## Usage
+
+To run the phpcs tests just execute the following command inside your terminal
+
+```
+vendor/bin/phpcs --standard=phpcs.xml SrcDirectory/
+```
+
+
 ## Rules Details
 
 This ruleset extends the PSR2 standard with a few twicks: 
