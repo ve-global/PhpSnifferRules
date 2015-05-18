@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="Ve">
+	<description>Ve Interactive Coding Standard</description>
+	<rule ref="PSR2">
+		<exclude name="Generic.WhiteSpace.DisallowTabIndent"/>
+
+		<!-- Opening parenthesis of a multi-line function call must be the last content on the line. -->
+		<!-- Closing parenthesis of a multi-line function call must be on a line by itself. -->
+		<!-- Only one argument is allowed per line in a multi-line function call. -->
+		<exclude name="PEAR.Functions.FunctionCallSignature"/>
+		<exclude name="Squiz.Functions.MultiLineFunctionDeclaration"/>
+
+		<!-- We don't have line length (line width) limits. -->
+		<exclude name="Generic.Files.LineLength"/>
+
+		<!-- CASE keyword must be indented 4 spaces from SWITCH keyword. -->
+		
+		<exclude name="Squiz.ControlStructures.ControlSignature"/>
+		
+	</rule>
+	<rule ref="Generic.WhiteSpace.DisallowSpaceIndent"/>
+	<rule ref="Ve.ControlStructures.ControlSignature"/>
+	<rule ref="Ve.WhiteSpaces.SpaceAfterNegateOperator"/>
+	<rule ref="Ve.NamingConventions.ValidVariableName">
+		<exclude-pattern>*/models/*</exclude-pattern>
+	</rule>
+	<rule ref="Ve.PHP.DisallowLongArraySyntax"/>
+	<rule ref="Ve.Functions.MultiLineFunctionDeclaration"/>
+	
+	
+	<rule ref="Squiz.Commenting.FunctionComment">
+		<exclude name="Squiz.Commenting.FunctionComment.MissingParamComment"/>
+		<exclude name="Squiz.Commenting.FunctionComment.MissingReturn"/>
+	</rule>
+	<rule ref="Squiz.Commenting.FunctionCommentThrowTag" />
+	<rule ref="Squiz.Commenting.ClassComment" />
+	<rule ref="Squiz.Commenting.VariableComment" />
+</ruleset>

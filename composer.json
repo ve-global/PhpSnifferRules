@@ -1,0 +1,14 @@
+{
+    "name": "ve-interactive/php-sniffer-rules",
+    "description": "additional code sniffer rules for php projects",
+    "require": {
+        "squizlabs/php_codesniffer": "^2.3"
+    },
+    "license": "GPL-3.0",
+    "authors": [
+        {
+            "name": "Nic Puddu",
+            "email": "nicola.puddu@veinteractive.com"
+        }
+    ]
+}
