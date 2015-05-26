@@ -31,6 +31,7 @@
 	<rule ref="Squiz.Commenting.FunctionComment">
 		<exclude name="Squiz.Commenting.FunctionComment.MissingParamComment"/>
 		<exclude name="Squiz.Commenting.FunctionComment.MissingReturn"/>
+		<exclude name="Squiz.Commenting.FunctionComment.MissingParamTag"/>
 	</rule>
 	<rule ref="Squiz.Commenting.FunctionCommentThrowTag" />
 	<rule ref="Squiz.Commenting.ClassComment" />
