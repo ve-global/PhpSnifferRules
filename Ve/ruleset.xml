@@ -35,6 +35,8 @@
 		<exclude name="Squiz.Commenting.FunctionComment.EmptyThrows"/>
 	</rule>
 	<rule ref="Squiz.Commenting.FunctionCommentThrowTag" />
-	<rule ref="Squiz.Commenting.ClassComment" />
+	<rule ref="Squiz.Commenting.ClassComment">
+		<exclude name="Squiz.Commenting.ClassComment.TagNotAllowed"/>
+	</rule>
 	<rule ref="Squiz.Commenting.VariableComment" />
 </ruleset>
