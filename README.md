@@ -72,7 +72,7 @@ vendor/bin/phpcs --standard=phpcs.xml SrcDirectory/
 
 ## Rules Details
 
-This ruleset extends the PSR2 standard with a few twicks: 
+This ruleset extends the PSR2 standard with a few tweaks: 
 
 - arrays must be declared using the short syntax.
 - tabs must be used in place of spaces.
