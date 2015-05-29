@@ -52,6 +52,10 @@ abstract class class_Name
 		$this->{'whatever'}();
 
         $array = array(12);
+
+		$string = "this is a string";
+
+		$concat = $this.$this;
 	}
 }
 ?>

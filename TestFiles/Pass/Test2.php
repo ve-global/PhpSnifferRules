@@ -73,6 +73,10 @@ abstract class ClassName
 
 		$this->{'whatever'}();
 
+		$string = 'this is a string';
+
+		$concat = $this . $this;
+
 		$array = [12];
 	}
 }
