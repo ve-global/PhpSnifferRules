@@ -75,7 +75,10 @@ abstract class ClassName
 
 		$string = 'this is a string';
 
-		$concat = $this . $this;
+		$varString = "string with {$variable}";
+
+		$concat = $this . $this .
+			$this;
 
 		$array = [12];
 	}
