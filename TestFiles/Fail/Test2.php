@@ -57,5 +57,17 @@ abstract class class_Name
 
 		$concat = $this.$this;
 	}
+
+	/**
+	 * @param string $var
+	 * @param string $var2
+	 * @param array  $var3
+	 */
+	protected function newLines($var,
+		$var2,
+		array $var3
+	) {
+
+	}
 }
 ?>

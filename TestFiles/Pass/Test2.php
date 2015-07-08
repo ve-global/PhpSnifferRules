@@ -82,4 +82,19 @@ abstract class ClassName
 
 		$array = [12];
 	}
+
+	/**
+	 * @param string $var
+	 * @param string $var2
+	 * @param array  $var3
+	 */
+	protected function newLines(
+		$var,
+		$var2,
+		array $var3
+	)
+	{
+
+		
+	}
 }
