@@ -56,4 +56,13 @@ class Foo extends Bar implements FooInterface
 	{
 		
 	}
+
+	/**
+	 * @param mixed ...$test
+	 * @param mixed $test2
+	 */
+	public function variadic($test, ...$test2)
+	{
+
+	}
 }

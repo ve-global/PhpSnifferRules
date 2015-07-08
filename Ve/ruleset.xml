@@ -28,11 +28,11 @@
 	<rule ref="Ve.Functions.MultiLineFunctionDeclaration"/>
 	
 	
-	<rule ref="Squiz.Commenting.FunctionComment">
-		<exclude name="Squiz.Commenting.FunctionComment.MissingParamComment"/>
-		<exclude name="Squiz.Commenting.FunctionComment.MissingReturn"/>
-		<exclude name="Squiz.Commenting.FunctionComment.MissingParamTag"/>
-		<exclude name="Squiz.Commenting.FunctionComment.EmptyThrows"/>
+	<rule ref="Ve.Commenting.FunctionComment">
+		<exclude name="Ve.Commenting.FunctionComment.MissingParamComment"/>
+		<exclude name="Ve.Commenting.FunctionComment.MissingReturn"/>
+		<exclude name="Ve.Commenting.FunctionComment.MissingParamTag"/>
+		<exclude name="Ve.Commenting.FunctionComment.EmptyThrows"/>
 	</rule>
 	<rule ref="Squiz.Commenting.FunctionCommentThrowTag" />
 	<rule ref="Squiz.Commenting.ClassComment">
