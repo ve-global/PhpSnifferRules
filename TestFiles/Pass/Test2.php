@@ -99,9 +99,10 @@ abstract class ClassName
 	}
 
 	/**
+	 * @param mixed &$variable
 	 * @param mixed ...$test
 	 */
-	protected function variadic(...$test)
+	protected function variadic(&$variable, ...$test)
 	{
 		
 	}

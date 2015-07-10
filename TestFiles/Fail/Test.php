@@ -65,4 +65,13 @@ class Foo extends Bar implements FooInterface
 	{
 
 	}
+
+	/**
+	 * @param mixed $test
+	 * @param mixed &$test2
+	 */
+	public function reference(&$test, $test2)
+	{
+
+	}
 }

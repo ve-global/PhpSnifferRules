@@ -258,8 +258,9 @@ class Ve_Sniffs_Commenting_FunctionCommentSniff extends Squiz_Sniffs_Commenting_
             // Make sure the param name is correct.
             if (isset($realParams[$pos]) === true) {
                 $realName = $realParams[$pos]['name'];
-				$isVariadic = $realParams[$pos]['is_variadic'];
-                if ($realName !== $param['var'] && !$isVariadic) {
+                $isVariadic = $realParams[$pos]['is_variadic'];
+                $passByReference = $realParams[$pos]['pass_by_reference'];
+                if ($realName !== $param['var'] && !$isVariadic && !$passByReference) {
                     $code = 'ParamNameNoMatch';
                     $data = array(
                              $param['var'],
@@ -276,8 +277,10 @@ class Ve_Sniffs_Commenting_FunctionCommentSniff extends Squiz_Sniffs_Commenting_
 
                     $phpcsFile->addError($error, $param['tag'], $code, $data);
                 } else if ($isVariadic && '...' . $realName !== $param['var']) {
-					$phpcsFile->addError('Doc comment for the parameter ' . $realName . ' should be variadic.', $param['tag'], 'NotVariadic');
-				}
+                    $phpcsFile->addError('Doc comment for the parameter ' . $realName . ' should be variadic.', $param['tag'], 'NotVariadic');
+                } else if ($passByReference && '&' . $realName !== $param['var']) {
+                    $phpcsFile->addError('Doc comment for the parameter ' . $realName . ' should contain the ampersand.', $param['tag'], 'NotByReference');
+                }
             } else if (substr($param['var'], -4) !== ',...') {
                 // We must have an extra parameter comment.
                 $error = 'Superfluous parameter comment';
