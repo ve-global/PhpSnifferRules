@@ -21,7 +21,7 @@
  * ];
  * </code>
  *
- * @author    Nicola Puddu <nicola.puddu@veinteractive.com>
+ * @author Nicola Puddu <nicola.puddu@veinteractive.com>
  */
 class Ve_Sniffs_PHP_DisallowLongArraySyntaxSniff implements PHP_CodeSniffer_Sniff
 {
@@ -33,7 +33,7 @@ class Ve_Sniffs_PHP_DisallowLongArraySyntaxSniff implements PHP_CodeSniffer_Snif
     public function register()
     {
         return array(T_ARRAY);
-    }//end register()
+    }
 
     /**
      * Processes the tokens that this sniff is interested in.
@@ -53,6 +53,6 @@ class Ve_Sniffs_PHP_DisallowLongArraySyntaxSniff implements PHP_CodeSniffer_Snif
             $phpcsFile->addError($error, $stackPtr, '', $data);
         }
 
-    }//end process()
+    }
 
 }

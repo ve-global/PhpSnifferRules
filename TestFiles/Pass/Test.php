@@ -9,7 +9,7 @@ use OtherVendor\OtherPackage\BazClass;
 /**
  * Class comment
  */
-class Foo extends Bar implements FooInterface
+class Test extends Bar implements FooInterface
 {
 	/**
 	 * Some text

@@ -7,7 +7,7 @@ use whatever\foo;
 /**
  * Class comment
  */
-abstract class ClassName
+abstract class AbstractTest2
 {
 	const CONSTANT = '12';
 
@@ -39,7 +39,7 @@ abstract class ClassName
 				echo 'First case, with a break';
 				break;
 			case 1:
-				
+
 				echo 'Second case, which falls through';
 				// no break
 			case 2:
@@ -95,7 +95,7 @@ abstract class ClassName
 	)
 	{
 
-		
+
 	}
 
 	/**
@@ -104,6 +104,6 @@ abstract class ClassName
 	 */
 	protected function variadic(&$variable, ...$test)
 	{
-		
+
 	}
 }

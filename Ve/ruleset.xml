@@ -14,9 +14,7 @@
 		<exclude name="Generic.Files.LineLength"/>
 
 		<!-- CASE keyword must be indented 4 spaces from SWITCH keyword. -->
-		
 		<exclude name="Squiz.ControlStructures.ControlSignature"/>
-		
 	</rule>
 	<rule ref="Generic.WhiteSpace.DisallowSpaceIndent"/>
 	<rule ref="Ve.ControlStructures.ControlSignature"/>
@@ -26,8 +24,7 @@
 	</rule>
 	<rule ref="Ve.PHP.DisallowLongArraySyntax"/>
 	<rule ref="Ve.Functions.MultiLineFunctionDeclaration"/>
-	
-	
+
 	<rule ref="Ve.Commenting.FunctionComment">
 		<exclude name="Ve.Commenting.FunctionComment.MissingParamComment"/>
 		<exclude name="Ve.Commenting.FunctionComment.MissingReturn"/>
@@ -48,4 +45,6 @@
 			<property name="ignoreNewlines" value="true"/>
 	   </properties>
 	</rule>
+	<rule ref="Squiz.Classes.ClassFileName"/>
+	<rule ref="Ve.Classes.AbstractClassName"/>
 </ruleset>

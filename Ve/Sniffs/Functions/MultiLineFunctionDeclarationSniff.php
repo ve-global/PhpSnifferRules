@@ -3,7 +3,7 @@
 /**
  * Ensure single and multi-line function declarations are defined correctly.
  *
- * @author    Nicola Puddu <nicola.puddu@veinteractive.com>
+ * @author Nicola Puddu <nicola.puddu@veinteractive.com>
  */
 class Ve_Sniffs_Functions_MultiLineFunctionDeclarationSniff extends Squiz_Sniffs_Functions_MultiLineFunctionDeclarationSniff
 {
@@ -89,7 +89,7 @@ class Ve_Sniffs_Functions_MultiLineFunctionDeclarationSniff extends Squiz_Sniffs
                     $phpcsFile->fixer->replaceToken(($openBracket - 1), '');
                 }
             }
-        }//end if
+        }
 
         // Must be one space before and after USE keyword for closures.
         if ($tokens[$stackPtr]['code'] === T_CLOSURE) {
@@ -136,8 +136,8 @@ class Ve_Sniffs_Functions_MultiLineFunctionDeclarationSniff extends Squiz_Sniffs
                         }
                     }
                 }
-            }//end if
-        }//end if
+            }
+        }
 
         // Check if this is a single line or multi-line declaration.
         $singleLine = true;
@@ -164,7 +164,7 @@ class Ve_Sniffs_Functions_MultiLineFunctionDeclarationSniff extends Squiz_Sniffs
             $this->processMultiLineDeclaration($phpcsFile, $stackPtr, $tokens);
         }
 
-    }//end process()
+    }
 
 	/**
 	 * Override of the multiline sniffer to enforce new line after the closing parenthesis.
@@ -235,8 +235,8 @@ class Ve_Sniffs_Functions_MultiLineFunctionDeclarationSniff extends Squiz_Sniffs
                         }
                     }
                 }
-            }//end if
-        }//end if
+            }
+        }
 
         // Each line between the parenthesis should be indented 4 spaces.
         $openBracket = $tokens[$stackPtr]['parenthesis_opener'];
@@ -281,7 +281,7 @@ class Ve_Sniffs_Functions_MultiLineFunctionDeclarationSniff extends Squiz_Sniffs
                 }
 
                 $lastLine = $tokens[$i]['line'];
-            }//end if
+            }
 
             if ($tokens[$i]['code'] === T_ARRAY || $tokens[$i]['code'] === T_OPEN_SHORT_ARRAY) {
                 // Skip arrays as they have their own indentation rules.
@@ -294,7 +294,7 @@ class Ve_Sniffs_Functions_MultiLineFunctionDeclarationSniff extends Squiz_Sniffs
                 $lastLine = $tokens[$i]['line'];
                 continue;
             }
-        }//end for
+        }
 
         if (isset($tokens[$stackPtr]['scope_opener']) === true) {
             // The opening brace needs to be one space away
@@ -326,7 +326,7 @@ class Ve_Sniffs_Functions_MultiLineFunctionDeclarationSniff extends Squiz_Sniffs
                 $error = 'There must be a single space between the closing parenthesis and the opening brace of a multi-line function declaration';
                 $phpcsFile->addError($error, $next, 'NoSpaceBeforeOpenBrace');
             }
-        }//end if
+        }
 
 		// from parent
 
@@ -371,8 +371,8 @@ class Ve_Sniffs_Functions_MultiLineFunctionDeclarationSniff extends Squiz_Sniffs
 		if ($functionIndent !== $actualIndentation) {
 			$phpcsFile->addError('There should be ' . $functionIndent . ' spaces before the opening bracket. ' . $actualIndentation . ' found.', $openCurlyBracket, 'OpeningBraketIndentation');
 		}
-		
+
 	}
 
 
-}//end class
+}

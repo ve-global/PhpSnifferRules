@@ -4,7 +4,7 @@
     "require": {
         "squizlabs/php_codesniffer": "^2.3"
     },
-    "license": "GPL-3.0",
+    "license": "MIT",
     "authors": [
         {
             "name": "Nic Puddu",

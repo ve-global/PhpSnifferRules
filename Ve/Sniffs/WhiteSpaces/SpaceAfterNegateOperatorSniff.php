@@ -3,7 +3,7 @@
 /**
  * Verifies that the negate operator is always followed by a space.
  *
- * @author    Nicola Puddu <nicola.puddu@veinteractive.com>
+ * @author Nicola Puddu <nicola.puddu@veinteractive.com>
  */
 class Ve_Sniffs_WhiteSpaces_SpaceAfterNegateOperatorSniff implements PHP_CodeSniffer_Sniff
 {
@@ -17,7 +17,7 @@ class Ve_Sniffs_WhiteSpaces_SpaceAfterNegateOperatorSniff implements PHP_CodeSni
     {
         return array(T_VARIABLE, T_STRING, T_ISSET);
 
-    }//end register()
+    }
 
 	/**
      * Processes the tokens that this sniff is interested in.
@@ -36,8 +36,6 @@ class Ve_Sniffs_WhiteSpaces_SpaceAfterNegateOperatorSniff implements PHP_CodeSni
 		} elseif ($tokens[$stackPtr -1]['content'] == '(' && $tokens[$stackPtr -2]['content'] == '!') {
 			$phpcsFile->addError('Missing space after the "!"', $stackPtr);
 		}
-    }//end process()
+    }
 
-
-
-}//end class
+}

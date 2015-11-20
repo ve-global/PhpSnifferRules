@@ -3,7 +3,7 @@
 /**
  * Verifies that variable names are all camelCase.
  *
- * @author    Nicola Puddu <nicola.puddu@veinteractive.com>
+ * @author Nicola Puddu <nicola.puddu@veinteractive.com>
  */
 class Ve_Sniffs_NamingConventions_ValidVariableNameSniff implements PHP_CodeSniffer_Sniff
 {
@@ -17,7 +17,7 @@ class Ve_Sniffs_NamingConventions_ValidVariableNameSniff implements PHP_CodeSnif
     {
         return array(T_VARIABLE);
 
-    }//end register()
+    }
 
 	/**
      * Processes the tokens that this sniff is interested in.
@@ -40,8 +40,6 @@ class Ve_Sniffs_NamingConventions_ValidVariableNameSniff implements PHP_CodeSnif
 		{
 			$phpcsFile->addError('Variable names must be camelCase.', $stackPtr);
 		}
-    }//end process()
+    }
 
-
-
-}//end class
+}
