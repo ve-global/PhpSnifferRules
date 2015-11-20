@@ -1,13 +1,16 @@
 <?php
 
 /**
- * Checks if the abstract class name has the Abstract prefix.
+ * Checks if the interfaces contain either the suffix or prefix.
  *
  * @author Nicola Puddu <nicola.puddu@veinteractive.com>
  */
-class Ve_Sniffs_Classes_AbstractClassNameSniff implements PHP_CodeSniffer_Sniff
+class Ve_Sniffs_Classes_InterfaceClassNameSniff implements PHP_CodeSniffer_Sniff
 {
-	const PREFIX = 'Abstract';
+	const SUFFIX = 'Interface';
+	const PREFIX = 'I';
+
+	public $checkSuffix = false;
 
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -17,7 +20,7 @@ class Ve_Sniffs_Classes_AbstractClassNameSniff implements PHP_CodeSniffer_Sniff
     public function register()
     {
         return array(
-            T_CLASS,
+            T_INTERFACE,
         );
     }
 
@@ -35,9 +38,13 @@ class Ve_Sniffs_Classes_AbstractClassNameSniff implements PHP_CodeSniffer_Sniff
         $tokens  = $phpcsFile->getTokens();
         $className = $tokens[$phpcsFile->findNext(T_STRING, $stackPtr)]['content'];
 
-		if ($tokens[$stackPtr -2]['code'] === T_ABSTRACT && strpos($className, self::PREFIX) !== 0)
+		if ($this->checkSuffix && strpos($className, self::SUFFIX) !== mb_strlen($className) - mb_strlen(self::SUFFIX))
 		{
-			$phpcsFile->addError('The abstract class "' . $className . '" does not have the "' . self::PREFIX . '" prefix in its name.', $stackPtr, 'WrongName');
+			$phpcsFile->addError('The interface "' . $className . '" does not have the "' . self::SUFFIX . '" suffix in its name.', $stackPtr, 'MissingSuffix');
+		}
+		elseif (! $this->checkSuffix && strpos($className, self::PREFIX) !== 0)
+		{
+			$phpcsFile->addError('The interface "' . $className . '" does not have the "' . self::PREFIX . '" prefix in its name.', $stackPtr, 'MissingPrefix');
 		}
     }
 
