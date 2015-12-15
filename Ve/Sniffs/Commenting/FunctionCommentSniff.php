@@ -12,6 +12,8 @@ if (class_exists('PEAR_Sniffs_Commenting_FunctionCommentSniff', true) === false)
 class Ve_Sniffs_Commenting_FunctionCommentSniff extends Squiz_Sniffs_Commenting_FunctionCommentSniff
 {
 
+	public $treatNullAsInternalType = true;
+
 	/**
 	 * Process the function parameter comments.
 	 *
@@ -22,14 +24,17 @@ class Ve_Sniffs_Commenting_FunctionCommentSniff extends Squiz_Sniffs_Commenting_
 	 *
 	 * @return void
 	 */
-	protected function processParams(PHP_CodeSniffer_File $phpcsFile, $stackPtr,
-								  $commentStart)
+	protected function processParams(
+		PHP_CodeSniffer_File $phpcsFile,
+		$stackPtr,
+		$commentStart
+	)
 	{
 		$tokens = $phpcsFile->getTokens();
 
-		$params	 = array();
+		$params = array();
 		$maxType = 0;
-		$maxVar	 = 0;
+		$maxVar = 0;
 		foreach ($tokens[$commentStart]['comment_tags'] as $pos => $tag)
 		{
 			if ($tokens[$tag]['content'] !== '@param')
@@ -37,21 +42,21 @@ class Ve_Sniffs_Commenting_FunctionCommentSniff extends Squiz_Sniffs_Commenting_
 				continue;
 			}
 
-			$type			 = '';
-			$typeSpace		 = 0;
-			$var			 = '';
-			$varSpace		 = 0;
-			$comment		 = '';
-			$commentLines	 = array();
+			$type = '';
+			$typeSpace = 0;
+			$var = '';
+			$varSpace = 0;
+			$comment = '';
+			$commentLines = array();
 			if ($tokens[($tag + 2)]['code'] === T_DOC_COMMENT_STRING)
 			{
-				$matches	 = array();
+				$matches = array();
 				preg_match('/([^$&.]+)(?:((?:\$|&|.)[^\s]+)(?:(\s+)(.*))?)?/',
 					$tokens[($tag + 2)]['content'], $matches);
-				$typeLen	 = strlen($matches[1]);
-				$type		 = trim($matches[1]);
-				$typeSpace	 = ($typeLen - strlen($type));
-				$typeLen	 = strlen($type);
+				$typeLen = strlen($matches[1]);
+				$type = trim($matches[1]);
+				$typeSpace = ($typeLen - strlen($type));
+				$typeLen = strlen($type);
 				if ($typeLen > $maxType)
 				{
 					$maxType = $typeLen;
@@ -59,8 +64,8 @@ class Ve_Sniffs_Commenting_FunctionCommentSniff extends Squiz_Sniffs_Commenting_
 
 				if (isset($matches[2]) === true)
 				{
-					$var	 = $matches[2];
-					$varLen	 = strlen($var);
+					$var = $matches[2];
+					$varLen = strlen($var);
 					if ($varLen > $maxVar)
 					{
 						$maxVar = $varLen;
@@ -68,9 +73,9 @@ class Ve_Sniffs_Commenting_FunctionCommentSniff extends Squiz_Sniffs_Commenting_
 
 					if (isset($matches[4]) === true)
 					{
-						$varSpace		 = strlen($matches[3]);
-						$comment		 = $matches[4];
-						$commentLines[]	 = array(
+						$varSpace = strlen($matches[3]);
+						$comment = $matches[4];
+						$commentLines[] = array(
 							'comment' => $comment,
 							'token' => ($tag + 2),
 							'indent' => $varSpace,
@@ -107,7 +112,7 @@ class Ve_Sniffs_Commenting_FunctionCommentSniff extends Squiz_Sniffs_Commenting_
 					}
 					else
 					{
-						$error			 = 'Missing parameter comment';
+						$error = 'Missing parameter comment';
 						$phpcsFile->addError($error, $tag, 'MissingParamComment');
 						$commentLines[]	 = array('comment' => '');
 					}
@@ -135,8 +140,11 @@ class Ve_Sniffs_Commenting_FunctionCommentSniff extends Squiz_Sniffs_Commenting_
 			);
 		}
 
-		$realParams	 = $this->getMethodParametersWithVariadic($stackPtr, $phpcsFile,
-			$tokens);
+		$realParams = $this->getMethodParametersWithVariadic(
+			$stackPtr,
+			$phpcsFile,
+			$tokens
+		);
 		$foundParams = array();
 
 		foreach ($params as $pos => $param)
@@ -154,8 +162,8 @@ class Ve_Sniffs_Commenting_FunctionCommentSniff extends Squiz_Sniffs_Commenting_
 				$suggestedName = PHP_CodeSniffer::suggestType($typeName);
 				if ($typeName !== $suggestedName)
 				{
-					$error	 = 'Expected "%s" but found "%s" for parameter type';
-					$data	 = array(
+					$error = 'Expected "%s" but found "%s" for parameter type';
+					$data = array(
 						$suggestedName,
 						$typeName,
 					);
@@ -178,6 +186,13 @@ class Ve_Sniffs_Commenting_FunctionCommentSniff extends Squiz_Sniffs_Commenting_
 				}
 				else if (count($typeNames) === 1)
 				{
+					$allowedTypes = PHP_CodeSniffer::$allowedTypes;
+
+					if ($this->treatNullAsInternalType)
+					{
+						$allowedTypes[] = 'null';
+					}
+
 					// Check type hint for array and custom type.
 					$suggestedTypeHint = '';
 					if (strpos($suggestedName, 'array') !== false)
@@ -188,7 +203,7 @@ class Ve_Sniffs_Commenting_FunctionCommentSniff extends Squiz_Sniffs_Commenting_
 					{
 						$suggestedTypeHint = 'callable';
 					}
-					else if (in_array($typeName, PHP_CodeSniffer::$allowedTypes) === false)
+					else if (in_array($typeName, $allowedTypes) === false)
 					{
 						$suggestedTypeHint = $suggestedName;
 					}
@@ -198,8 +213,8 @@ class Ve_Sniffs_Commenting_FunctionCommentSniff extends Squiz_Sniffs_Commenting_
 						$typeHint = $realParams[$pos]['type_hint'];
 						if ($typeHint === '')
 						{
-							$error	 = 'Type hint "%s" missing for %s';
-							$data	 = array(
+							$error = 'Type hint "%s" missing for %s';
+							$data = array(
 								$suggestedTypeHint,
 								$param['var'],
 							);
@@ -207,8 +222,8 @@ class Ve_Sniffs_Commenting_FunctionCommentSniff extends Squiz_Sniffs_Commenting_
 						}
 						else if ($typeHint !== substr($suggestedTypeHint, (strlen($typeHint) * -1)))
 						{
-							$error	 = 'Expected type hint "%s"; found "%s" for %s';
-							$data	 = array(
+							$error = 'Expected type hint "%s"; found "%s" for %s';
+							$data = array(
 								$suggestedTypeHint,
 								$typeHint,
 								$param['var'],
@@ -221,8 +236,8 @@ class Ve_Sniffs_Commenting_FunctionCommentSniff extends Squiz_Sniffs_Commenting_
 						$typeHint = $realParams[$pos]['type_hint'];
 						if ($typeHint !== '')
 						{
-							$error	 = 'Unknown type hint "%s" found for %s';
-							$data	 = array(
+							$error = 'Unknown type hint "%s" found for %s';
+							$data = array(
 								$typeHint,
 								$param['var'],
 							);
@@ -243,8 +258,8 @@ class Ve_Sniffs_Commenting_FunctionCommentSniff extends Squiz_Sniffs_Commenting_
 			$spaces = ($maxType - strlen($param['type']) + 1);
 			if ($param['type_space'] !== $spaces)
 			{
-				$error	 = 'Expected %s spaces after parameter type; %s found';
-				$data	 = array(
+				$error = 'Expected %s spaces after parameter type; %s found';
+				$data = array(
 					$spaces,
 					$param['type_space'],
 				);
@@ -284,13 +299,13 @@ class Ve_Sniffs_Commenting_FunctionCommentSniff extends Squiz_Sniffs_Commenting_
 			// Make sure the param name is correct.
 			if (isset($realParams[$pos]) === true)
 			{
-				$realName		 = $realParams[$pos]['name'];
-				$isVariadic		 = $realParams[$pos]['is_variadic'];
+				$realName = $realParams[$pos]['name'];
+				$isVariadic = $realParams[$pos]['is_variadic'];
 				$passByReference = $realParams[$pos]['pass_by_reference'];
 				if ($realName !== $param['var'] && !$isVariadic && !$passByReference)
 				{
-					$code	 = 'ParamNameNoMatch';
-					$data	 = array(
+					$code = 'ParamNameNoMatch';
+					$data = array(
 						$param['var'],
 						$realName,
 					);
@@ -333,8 +348,8 @@ class Ve_Sniffs_Commenting_FunctionCommentSniff extends Squiz_Sniffs_Commenting_
 			$spaces = ($maxVar - strlen($param['var']) + 1);
 			if ($param['var_space'] !== $spaces)
 			{
-				$error	 = 'Expected %s spaces after parameter name; %s found';
-				$data	 = array(
+				$error = 'Expected %s spaces after parameter name; %s found';
+				$data = array(
 					$spaces,
 					$param['var_space'],
 				);
@@ -434,16 +449,16 @@ class Ve_Sniffs_Commenting_FunctionCommentSniff extends Squiz_Sniffs_Commenting_
 			throw new PHP_CodeSniffer_Exception('$stackPtr must be of type T_FUNCTION');
 		}
 
-		$opener	 = $tokens[$stackPtr]['parenthesis_opener'];
-		$closer	 = $tokens[$stackPtr]['parenthesis_closer'];
+		$opener = $tokens[$stackPtr]['parenthesis_opener'];
+		$closer = $tokens[$stackPtr]['parenthesis_closer'];
 
-		$vars			 = array();
-		$currVar		 = null;
-		$defaultStart	 = null;
-		$paramCount		 = 0;
+		$vars = array();
+		$currVar = null;
+		$defaultStart = null;
+		$paramCount = 0;
 		$passByReference = false;
-		$isVariadic		 = false;
-		$typeHint		 = '';
+		$isVariadic = false;
+		$typeHint = '';
 
 		for ($i = ($opener + 1); $i <= $closer; $i++)
 		{
@@ -466,19 +481,19 @@ class Ve_Sniffs_Commenting_FunctionCommentSniff extends Squiz_Sniffs_Commenting_
 					$passByReference = true;
 					break;
 				case T_ELLIPSIS:
-					$isVariadic		 = true;
+					$isVariadic = true;
 					break;
 				case T_VARIABLE:
-					$currVar		 = $i;
+					$currVar = $i;
 					break;
 				case T_ARRAY_HINT:
 				case T_CALLABLE:
-					$typeHint		 = $tokens[$i]['content'];
+					$typeHint = $tokens[$i]['content'];
 					break;
 				case T_STRING:
 					// This is a string, so it may be a type hint, but it could
 					// also be a constant used as a default value.
-					$prevComma		 = false;
+					$prevComma = false;
 					for ($t = $i; $t >= $opener; $t--)
 					{
 						if ($tokens[$t]['code'] === T_COMMA)
@@ -527,8 +542,8 @@ class Ve_Sniffs_Commenting_FunctionCommentSniff extends Squiz_Sniffs_Commenting_
 						continue;
 					}
 
-					$vars[$paramCount]			 = array();
-					$vars[$paramCount]['name']	 = $tokens[$currVar]['content'];
+					$vars[$paramCount] = array();
+					$vars[$paramCount]['name'] = $tokens[$currVar]['content'];
 
 					if ($defaultStart !== null)
 					{
@@ -537,15 +552,15 @@ class Ve_Sniffs_Commenting_FunctionCommentSniff extends Squiz_Sniffs_Commenting_
 						);
 					}
 
-					$vars[$paramCount]['pass_by_reference']	 = $passByReference;
-					$vars[$paramCount]['type_hint']			 = $typeHint;
-					$vars[$paramCount]['is_variadic']		 = $isVariadic;
+					$vars[$paramCount]['pass_by_reference'] = $passByReference;
+					$vars[$paramCount]['type_hint'] = $typeHint;
+					$vars[$paramCount]['is_variadic'] = $isVariadic;
 
 					// Reset the vars, as we are about to process the next parameter.
-					$defaultStart	 = null;
+					$defaultStart = null;
 					$passByReference = false;
-					$isVariadic		 = false;
-					$typeHint		 = '';
+					$isVariadic = false;
+					$typeHint = '';
 
 					$paramCount++;
 					break;
