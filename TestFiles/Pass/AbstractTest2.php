@@ -39,7 +39,6 @@ abstract class AbstractTest2
 				echo 'First case, with a break';
 				break;
 			case 1:
-
 				echo 'Second case, which falls through';
 				// no break
 			case 2:

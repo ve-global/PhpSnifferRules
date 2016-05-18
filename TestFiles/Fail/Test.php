@@ -54,7 +54,7 @@ class Foo extends Bar implements FooInterface
 
 	private function _wrong()
 	{
-		
+
 	}
 
 	/**
@@ -71,6 +71,14 @@ class Foo extends Bar implements FooInterface
 	 * @param mixed &$test2
 	 */
 	public function reference(&$test, $test2)
+	{
+
+	}
+
+	/**
+	 * @param stdClass[] $whatever
+	 */
+	public function arrayType($whatever)
 	{
 
 	}
