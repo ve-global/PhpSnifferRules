@@ -159,8 +159,8 @@ class Ve_Sniffs_Commenting_FunctionCommentSniff extends Squiz_Sniffs_Commenting_
 			$typeNames = explode('|', $param['type']);
 			foreach ($typeNames as $typeName)
 			{
-				$suggestedName = PHP_CodeSniffer::suggestType($typeName);
-				if ($typeName !== $suggestedName)
+				$suggestedName = $this->getSuggestedType($typeName);
+				if ($typeName !== $suggestedName && (substr($typeName, -2) === '[]' && $suggestedName !== 'array'))
 				{
 					$error = 'Expected "%s" but found "%s" for parameter type';
 					$data = array(
@@ -416,6 +416,14 @@ class Ve_Sniffs_Commenting_FunctionCommentSniff extends Squiz_Sniffs_Commenting_
 			$data	 = array($neededParam);
 			$phpcsFile->addError($error, $commentStart, 'MissingParamTag', $data);
 		}
+	}
+
+	private function getSuggestedType($typeName)
+	{
+		if (substr($typeName, -2) === '[]') {
+			return 'array';
+		}
+		return PHP_CodeSniffer::suggestType($typeName);
 	}
 
 	/**
