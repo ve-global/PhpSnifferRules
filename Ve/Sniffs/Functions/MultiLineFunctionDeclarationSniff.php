@@ -1,73 +1,83 @@
 <?php
 
+namespace Ve\Sniffs\Functions;
+
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Standards\Squiz\Sniffs\Functions\MultiLineFunctionDeclarationSniff as OtherMultiLineFunctionDeclarationSniff;
+
 /**
  * Ensure single and multi-line function declarations are defined correctly.
  *
  * @author Nicola Puddu <nicola.puddu@veinteractive.com>
+ * @author Jack Blower  <Jack@elvenspellmaker.co.uk>
  */
-class Ve_Sniffs_Functions_MultiLineFunctionDeclarationSniff extends Squiz_Sniffs_Functions_MultiLineFunctionDeclarationSniff
+class MultiLineFunctionDeclarationSniff extends OtherMultiLineFunctionDeclarationSniff
 {
+   /**
+    * @var array
+    */
+    private $stopTokens = ['T_SEMICOLON', 'T_ABSTRACT', 'T_CLOSE_CURLY_BRACKET'];
 
    /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param PHP_CodeSniffer_File $phpcsFile The file being scanned.
-     * @param int                  $stackPtr  The position of the current token
-     *                                        in the stack passed in $tokens.
+     * @param File $phpcsFile The file being scanned.
+     * @param int  $stackPtr  The position of the current token
+     *                        in the stack passed in $tokens.
      *
      * @return void
      */
-    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
 
         $openBracket  = $tokens[$stackPtr]['parenthesis_opener'];
         $closeBracket = $tokens[$stackPtr]['parenthesis_closer'];
 
-		if ($tokens[$stackPtr]['code'] === T_FUNCTION) {
-			// Must be one space after the FUNCTION keyword.
-			if ($tokens[($stackPtr + 1)]['content'] === $phpcsFile->eolChar) {
-				$spaces = 'newline';
-			} else if ($tokens[($stackPtr + 1)]['code'] === T_WHITESPACE) {
-				$spaces = strlen($tokens[($stackPtr + 1)]['content']);
-			} else {
-				$spaces = 0;
-			}
+        if ($tokens[$stackPtr]['code'] === T_FUNCTION) {
+            // Must be one space after the FUNCTION keyword.
+            if ($tokens[($stackPtr + 1)]['content'] === $phpcsFile->eolChar) {
+                $spaces = 'newline';
+            } else if ($tokens[($stackPtr + 1)]['code'] === T_WHITESPACE) {
+                $spaces = strlen($tokens[($stackPtr + 1)]['content']);
+            } else {
+                $spaces = 0;
+            }
 
-			if ($spaces !== 1) {
-				$error = 'Expected 1 space after FUNCTION keyword; %s found';
-				$data  = array($spaces);
-				$fix   = $phpcsFile->addFixableError($error, $stackPtr, 'SpaceAfterFunction', $data);
-				if ($fix === true) {
-					if ($spaces === 0) {
-						$phpcsFile->fixer->addContent($stackPtr, ' ');
-					} else {
-						$phpcsFile->fixer->replaceToken(($stackPtr + 1), ' ');
-					}
-				}
-			}
-		} else {
-			if ($tokens[($stackPtr + 1)]['content'] === $phpcsFile->eolChar) {
-				$spaces = 'newline';
-			} else if ($tokens[($stackPtr + 1)]['code'] === T_WHITESPACE) {
-				$spaces = strlen($tokens[($stackPtr + 1)]['content']);
-			} else {
-				$spaces = 0;
-			}
+            if ($spaces !== 1) {
+                $error = 'Expected 1 space after FUNCTION keyword; %s found';
+                $data  = array($spaces);
+                $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'SpaceAfterFunction', $data);
+                if ($fix === true) {
+                    if ($spaces === 0) {
+                        $phpcsFile->fixer->addContent($stackPtr, ' ');
+                    } else {
+                        $phpcsFile->fixer->replaceToken(($stackPtr + 1), ' ');
+                    }
+                }
+            }
+        } else {
+            if ($tokens[($stackPtr + 1)]['content'] === $phpcsFile->eolChar) {
+                $spaces = 'newline';
+            } else if ($tokens[($stackPtr + 1)]['code'] === T_WHITESPACE) {
+                $spaces = strlen($tokens[($stackPtr + 1)]['content']);
+            } else {
+                $spaces = 0;
+            }
 
-			if ($spaces === 1) {
-				$error = 'Expected 0 space after FUNCTION keyword on closure; %s found';
-				$data  = array($spaces);
-				$fix   = $phpcsFile->addFixableError($error, $stackPtr, 'SpaceAfterClosure', $data);
-				if ($fix === true) {
-					if ($spaces === 0) {
-						$phpcsFile->fixer->addContent($stackPtr, ' ');
-					} else {
-						$phpcsFile->fixer->replaceToken(($stackPtr + 1), ' ');
-					}
-				}
-			}
-		}
+            if ($spaces === 1) {
+                $error = 'Expected 0 space after FUNCTION keyword on closure; %s found';
+                $data  = array($spaces);
+                $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'SpaceAfterClosure', $data);
+                if ($fix === true) {
+                    if ($spaces === 0) {
+                        $phpcsFile->fixer->addContent($stackPtr, ' ');
+                    } else {
+                        $phpcsFile->fixer->replaceToken(($stackPtr + 1), ' ');
+                    }
+                }
+            }
+        }
 
         // Must be one space before the opening parenthesis. For closures, this is
         // enforced by the first check because there is no content between the keywords
@@ -166,16 +176,16 @@ class Ve_Sniffs_Functions_MultiLineFunctionDeclarationSniff extends Squiz_Sniffs
 
     }
 
-	/**
-	 * Override of the multiline sniffer to enforce new line after the closing parenthesis.
-	 *
-	 * @param PHP_CodeSniffer_File $phpcsFile
-	 * @param integer $stackPtr
-	 * @param array $tokens
-	 */
-	public function processMultiLineDeclaration(PHP_CodeSniffer_File $phpcsFile, $stackPtr, $tokens)
+    /**
+     * Override of the multiline sniffer to enforce new line after the closing parenthesis.
+     *
+     * @param File    $phpcsFile
+     * @param integer $stackPtr
+     * @param array   $tokens
+     */
+    public function processMultiLineDeclaration($phpcsFile, $stackPtr, $tokens)
     {
-		// We need to work out how far indented the function
+        // We need to work out how far indented the function
         // declaration itself is, so we can work out how far to
         // indent parameters.
         $functionIndent = 0;
@@ -328,12 +338,12 @@ class Ve_Sniffs_Functions_MultiLineFunctionDeclarationSniff extends Squiz_Sniffs
             }
         }
 
-		// from parent
+        // from parent
 
-		$openBracket = $tokens[$stackPtr]['parenthesis_opener'];
+        $openBracket = $tokens[$stackPtr]['parenthesis_opener'];
         $this->processBracket($phpcsFile, $openBracket, $tokens, 'function');
 
-		$this->checkOpenCurlyBrackets($phpcsFile, $stackPtr, $tokens, $functionIndent);
+        $this->checkOpenCurlyBrackets($phpcsFile, $stackPtr, $tokens, $functionIndent);
 
         if ($tokens[$stackPtr]['code'] !== T_CLOSURE) {
             return;
@@ -353,26 +363,33 @@ class Ve_Sniffs_Functions_MultiLineFunctionDeclarationSniff extends Squiz_Sniffs
         } else {
             $gap = 0;
         }
-	}
+    }
 
-	/**
-	 * Checks the indentation of opening curly brackets
-	 *
-	 * @param PHP_CodeSniffer_File $phpcsFile
-	 * @param integer $stackPtr
-	 * @param array $tokens
-	 * @param integer $functionIndent
-	 */
-	private function checkOpenCurlyBrackets(PHP_CodeSniffer_File $phpcsFile, $stackPtr, $tokens, $functionIndent)
-	{
-		$openCurlyBracket = $phpcsFile->findNext(T_OPEN_CURLY_BRACKET, ($tokens[$stackPtr]['parenthesis_closer'] + 1));
-		$actualIndentation = $tokens[$openCurlyBracket]['column'] - 1;
+    /**
+     * Checks the indentation of opening curly brackets
+     *
+     * @param File    $phpcsFile
+     * @param integer $stackPtr
+     * @param array   $tokens
+     * @param integer $functionIndent
+     */
+    private function checkOpenCurlyBrackets(File $phpcsFile, $stackPtr, $tokens, $functionIndent)
+    {
+        $openCurlyBracket = $phpcsFile->findNext(T_OPEN_CURLY_BRACKET, ($tokens[$stackPtr]['parenthesis_closer'] + 1));
+        $actualIndentation = $tokens[$openCurlyBracket]['column'] - 1;
 
-		if ($functionIndent !== $actualIndentation) {
-			$phpcsFile->addError('There should be ' . $functionIndent . ' spaces before the opening bracket. ' . $actualIndentation . ' found.', $openCurlyBracket, 'OpeningBraketIndentation');
-		}
+        if ($functionIndent !== $actualIndentation) {
+            $abstractPtr = $stackPtr;
+            while (
+                --$abstractPtr > 0
+                && ! in_array($tokens[$abstractPtr]['type'], $this->stopTokens)
+            );
 
-	}
+            if ($tokens[$abstractPtr]['type'] !== 'T_ABSTRACT')
+            {
+                $phpcsFile->addError('There should be ' . $functionIndent . ' spaces before the opening bracket. ' . $actualIndentation . ' found.', $openCurlyBracket, 'OpeningBraketIndentation');
+            }
+        }
 
-
+    }
 }

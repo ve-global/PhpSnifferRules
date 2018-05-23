@@ -1,11 +1,17 @@
 <?php
 
+namespace Ve\Sniffs\WhiteSpaces;
+
+use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Files\File;
+
 /**
  * Verifies that the negate operator is always followed by a space.
  *
  * @author Nicola Puddu <nicola.puddu@veinteractive.com>
+ * @author Jack Blower  <Jack@elvenspellmaker.co.uk>
  */
-class Ve_Sniffs_WhiteSpaces_SpaceAfterNegateOperatorSniff implements PHP_CodeSniffer_Sniff
+class SpaceAfterNegateOperatorSniff implements Sniff
 {
 
     /**
@@ -19,23 +25,23 @@ class Ve_Sniffs_WhiteSpaces_SpaceAfterNegateOperatorSniff implements PHP_CodeSni
 
     }
 
-	/**
+    /**
      * Processes the tokens that this sniff is interested in.
      *
-     * @param PHP_CodeSniffer_File $phpcsFile The file where the token was found.
-     * @param int                  $stackPtr  The position in the stack where
-     *                                        the token was found.
+     * @param File $phpcsFile The file where the token was found.
+     * @param int  $stackPtr  The position in the stack where the token was
+     *                        found.
      *
      * @return void
      */
-    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
-		if ($tokens[$stackPtr -1]['content'] == '!') {
-			$phpcsFile->addError('Missing space after the "!"', $stackPtr);
-		} elseif ($tokens[$stackPtr -1]['content'] == '(' && $tokens[$stackPtr -2]['content'] == '!') {
-			$phpcsFile->addError('Missing space after the "!"', $stackPtr);
-		}
+        if ($tokens[$stackPtr - 1]['content'] === '!') {
+            $phpcsFile->addError('Missing space after the "!"', $stackPtr, '');
+        } elseif ($tokens[$stackPtr - 1]['content'] === '(' && $tokens[$stackPtr - 2]['content'] == '!') {
+            $phpcsFile->addError('Missing space after the "!"', $stackPtr, '');
+        }
     }
 
 }

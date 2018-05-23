@@ -62,7 +62,6 @@ class Test extends Bar implements FooInterface
 		$variableName = 'foo';
 
 		$fn = function() {
-
 		};
 	}
 

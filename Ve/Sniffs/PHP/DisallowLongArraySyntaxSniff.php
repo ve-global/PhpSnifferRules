@@ -1,5 +1,10 @@
 <?php
 
+namespace Ve\Sniffs\PHP;
+
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
+
 /**
  * This sniff prohibits the use of the old array() syntax.
  *
@@ -22,8 +27,9 @@
  * </code>
  *
  * @author Nicola Puddu <nicola.puddu@veinteractive.com>
+ * @author Jack Blower  <Jack@elvenspellmaker.co.uk>
  */
-class Ve_Sniffs_PHP_DisallowLongArraySyntaxSniff implements PHP_CodeSniffer_Sniff
+class DisallowLongArraySyntaxSniff implements Sniff
 {
     /**
      * Returns the token types that this sniff is interested in.
@@ -38,13 +44,13 @@ class Ve_Sniffs_PHP_DisallowLongArraySyntaxSniff implements PHP_CodeSniffer_Snif
     /**
      * Processes the tokens that this sniff is interested in.
      *
-     * @param PHP_CodeSniffer_File $phpcsFile The file where the token was found.
-     * @param int                  $stackPtr  The position in the stack where
-     *                                        the token was found.
+     * @param File $phpcsFile The file where the token was found.
+     * @param int  $stackPtr  The position in the stack where
+     *                        the token was found.
      *
      * @return void
      */
-    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
         if ($tokens[$stackPtr]['content'] === 'array') {

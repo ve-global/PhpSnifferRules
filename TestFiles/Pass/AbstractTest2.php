@@ -93,8 +93,6 @@ abstract class AbstractTest2
 		array $var3
 	)
 	{
-
-
 	}
 
 	/**
@@ -103,6 +101,5 @@ abstract class AbstractTest2
 	 */
 	protected function variadic(&$variable, ...$test)
 	{
-
 	}
 }

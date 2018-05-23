@@ -1,15 +1,19 @@
 <?php
-if (class_exists('PEAR_Sniffs_Commenting_FunctionCommentSniff', true) === false)
-{
-	throw new PHP_CodeSniffer_Exception('Class PEAR_Sniffs_Commenting_FunctionCommentSniff not found');
-}
+
+namespace Ve\Sniffs\Commenting;
+
+use PHP_CodeSniffer\Exceptions\RuntimeException as PHP_CodeSniffer_RuntimeException;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Standards\Squiz\Sniffs\Commenting\FunctionCommentSniff as OtherFunctionCommentSniff;
+use PHP_CodeSniffer\Util\Common as PHP_CodeSniffer_Common;
 
 /**
  * Parses and verifies the doc comments for functions.
  *
  * @author Nicola Puddu <nicola.puddu@veinteractive.com>
+ * @author Jack Blower  <Jack@elvenspellmaker.co.uk>
  */
-class Ve_Sniffs_Commenting_FunctionCommentSniff extends Squiz_Sniffs_Commenting_FunctionCommentSniff
+class FunctionCommentSniff extends OtherFunctionCommentSniff
 {
 
 	public $treatNullAsInternalType = true;
@@ -17,15 +21,15 @@ class Ve_Sniffs_Commenting_FunctionCommentSniff extends Squiz_Sniffs_Commenting_
 	/**
 	 * Process the function parameter comments.
 	 *
-	 * @param PHP_CodeSniffer_File $phpcsFile    The file being scanned.
-	 * @param int                  $stackPtr     The position of the current token
-	 *                                           in the stack passed in $tokens.
-	 * @param int                  $commentStart The position in the stack where the comment started.
+	 * @param File $phpcsFile    The file being scanned.
+	 * @param int  $stackPtr     The position of the current token
+	 *                           in the stack passed in $tokens.
+	 * @param int  $commentStart The position in the stack where the comment started.
 	 *
 	 * @return void
 	 */
 	protected function processParams(
-		PHP_CodeSniffer_File $phpcsFile,
+		File $phpcsFile,
 		$stackPtr,
 		$commentStart
 	)
@@ -186,7 +190,7 @@ class Ve_Sniffs_Commenting_FunctionCommentSniff extends Squiz_Sniffs_Commenting_
 				}
 				else if (count($typeNames) === 1)
 				{
-					$allowedTypes = PHP_CodeSniffer::$allowedTypes;
+					$allowedTypes = PHP_CodeSniffer_Common::$allowedTypes;
 
 					if ($this->treatNullAsInternalType)
 					{
@@ -423,7 +427,7 @@ class Ve_Sniffs_Commenting_FunctionCommentSniff extends Squiz_Sniffs_Commenting_
 		if (substr($typeName, -2) === '[]') {
 			return 'array';
 		}
-		return PHP_CodeSniffer::suggestType($typeName);
+		return PHP_CodeSniffer_Common::suggestType($typeName);
 	}
 
 	/**
@@ -443,18 +447,20 @@ class Ve_Sniffs_Commenting_FunctionCommentSniff extends Squiz_Sniffs_Commenting_
 	 * Parameters with default values have an additional array index of
 	 * 'default' with the value of the default as a string.
 	 *
-	 * @param int $stackPtr The position in the stack of the T_FUNCTION token
-	 *                      to acquire the parameters for.
+	 * @param int   $stackPtr  The position in the stack of the T_FUNCTION token
+	 *                         to acquire the parameters for.
+	 * @param File  $phpcsFile
+	 * @param array $tokens
 	 *
 	 * @return array
-	 * @throws PHP_CodeSniffer_Exception If the specified $stackPtr is not of
+	 * @throws PHP_CodeSniffer_RuntimeException If the specified $stackPtr is not of
 	 *                                   type T_FUNCTION.
 	 */
 	private function getMethodParametersWithVariadic($stackPtr, $phpcsFile, $tokens)
 	{
 		if ($tokens[$stackPtr]['code'] !== T_FUNCTION)
 		{
-			throw new PHP_CodeSniffer_Exception('$stackPtr must be of type T_FUNCTION');
+			throw new PHP_CodeSniffer_RuntimeException('$stackPtr must be of type T_FUNCTION');
 		}
 
 		$opener = $tokens[$stackPtr]['parenthesis_opener'];
