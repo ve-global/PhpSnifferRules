@@ -21,10 +21,10 @@ class Test extends Bar implements FooInterface
 	/**
 	 * Some text
 	 *
-	 * @param string  $a
-	 * @param boolean $b
+	 * @param string $a
+	 * @param bool   $b
 	 */
-	public function sampleFunction($a, $b = false)
+	public function sampleFunction(string $a, bool $b = false)
 	{
 		if ($a === $b)
 		{

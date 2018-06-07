@@ -16,6 +16,14 @@ use PHP_CodeSniffer\Util\Common as PHP_CodeSniffer_Common;
 class FunctionCommentSniff extends OtherFunctionCommentSniff
 {
 
+	public static $allowedTypes = [
+		'array',
+		'mixed',
+		'object',
+		'resource',
+		'callable',
+	];
+
 	public $treatNullAsInternalType = true;
 
 	/**
@@ -190,7 +198,7 @@ class FunctionCommentSniff extends OtherFunctionCommentSniff
 				}
 				else if (count($typeNames) === 1)
 				{
-					$allowedTypes = PHP_CodeSniffer_Common::$allowedTypes;
+					$allowedTypes = self::$allowedTypes;
 
 					if ($this->treatNullAsInternalType)
 					{
@@ -427,6 +435,21 @@ class FunctionCommentSniff extends OtherFunctionCommentSniff
 		if (substr($typeName, -2) === '[]') {
 			return 'array';
 		}
+
+		switch ($typeName)
+		{
+			case 'int':
+			case 'integer':
+				return 'int';
+			case 'string':
+				return 'string';
+			case 'bool':
+			case 'boolean':
+				return 'bool';
+			case 'float':
+				return 'float';
+		}
+
 		return PHP_CodeSniffer_Common::suggestType($typeName);
 	}
 

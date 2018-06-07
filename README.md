@@ -15,7 +15,7 @@ Inside your project ```composer.json``` file add the package to the require-dev 
 },
 ```
 
-The repo yneeds to be added to the composer file:
+The repo needs to be added to the composer file:
 ```
 "repositories": [
     {
