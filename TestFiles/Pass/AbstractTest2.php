@@ -88,13 +88,11 @@ abstract class AbstractTest2
 	 * @param array  $var3
 	 */
 	protected function newLines(
-		$var,
-		$var2,
+		string $var,
+		string $var2,
 		array $var3
 	)
 	{
-
-
 	}
 
 	/**
@@ -103,6 +101,5 @@ abstract class AbstractTest2
 	 */
 	protected function variadic(&$variable, ...$test)
 	{
-
 	}
 }
