@@ -10,12 +10,13 @@ Inside your project ```composer.json``` file add the package to the require-dev 
 
 ```
 "require-dev": {
-    "phpunit/phpunit": "5.5.*",
+    "phpunit/phpunit": "4.5.*",
     "ve-interactive/php-sniffer-rules": "dev-master"
 },
 ```
 
-The repo needs to be added to the composer file:
+Because the project is currently inside a private repository the repository itself needs to be added to the composer file.
+
 ```
 "repositories": [
     {

@@ -21,10 +21,10 @@ class Test extends Bar implements FooInterface
 	/**
 	 * Some text
 	 *
-	 * @param string $a
-	 * @param bool   $b
+	 * @param string  $a
+	 * @param boolean $b
 	 */
-	public function sampleFunction(string $a, bool $b = false)
+	public function sampleFunction($a, $b = false)
 	{
 		if ($a === $b)
 		{
@@ -62,6 +62,7 @@ class Test extends Bar implements FooInterface
 		$variableName = 'foo';
 
 		$fn = function() {
+
 		};
 	}
 

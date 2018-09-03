@@ -58,22 +58,6 @@ class Foo extends Bar implements FooInterface
 	}
 
 	/**
-	 * @param boolean $b
-	 */
-	public function testBoolean($b)
-	{
-
-	}
-
-	/**
-	 * @param boolean $b
-	 */
-	public function testBoolean2(boolean $b)
-	{
-
-	}
-
-	/**
 	 * @param mixed ...$test
 	 * @param mixed $test2
 	 */

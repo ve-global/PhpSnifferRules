@@ -1,18 +1,11 @@
 <?php
 
-namespace Ve\Sniffs\ControlStructures;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
-use PHP_CodeSniffer\Util\Tokens;
-
 /**
  * Verifies that control statements conform to their coding standards.
  *
  * @author Nicola Puddu <nicola.puddu@veinteractive.com>
- * @author Jack Blower  <Jack@elvenspellmaker.co.uk>
  */
-class ControlSignatureSniff implements Sniff
+class Ve_Sniffs_ControlStructures_ControlSignatureSniff implements PHP_CodeSniffer_Sniff
 {
 	/**
 	 * A list of tokenizers this sniff supports.
@@ -47,13 +40,13 @@ class ControlSignatureSniff implements Sniff
 	/**
 	 * Processes this test, when one of its tokens is encountered.
 	 *
-	 * @param File $phpcsFile The file being scanned.
-	 * @param int  $stackPtr  The position of the current token in the
-	 *                        stack passed in $tokens.
+	 * @param PHP_CodeSniffer_File $phpcsFile The file being scanned.
+	 * @param int                  $stackPtr  The position of the current token in the
+	 *                                        stack passed in $tokens.
 	 *
 	 * @return void
 	 */
-	public function process(File $phpcsFile, $stackPtr)
+	public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
 	{
 		$tokens = $phpcsFile->getTokens();
 
@@ -70,7 +63,7 @@ class ControlSignatureSniff implements Sniff
 		else if ($tokens[$stackPtr]['code'] === T_ELSE || $tokens[$stackPtr]['code'] === T_ELSEIF
 		)
 		{
-			$closer = $phpcsFile->findPrevious(Tokens::$emptyTokens,
+			$closer = $phpcsFile->findPrevious(PHP_CodeSniffer_Tokens::$emptyTokens,
 				($stackPtr - 1), null, true);
 			if ($closer === false || $tokens[$closer]['code'] !== T_CLOSE_CURLY_BRACKET)
 			{
@@ -88,12 +81,12 @@ class ControlSignatureSniff implements Sniff
 	}
 
 	/**
-	 * @param array   $tokens
+	 * @param array $tokens
 	 * @param integer $stackPtr
-	 * @param File    $phpcsFile
+	 * @param PHP_CodeSniffer_File $phpcsFile
 	 */
 	private function checkSingleSpaceAfterKeyword(array $tokens, $stackPtr,
-											   File $phpcsFile)
+											   PHP_CodeSniffer_File $phpcsFile)
 	{
 		if (in_array($tokens[$stackPtr]['code'], [T_TRY, T_DO, T_ELSE]))
 		{
@@ -146,12 +139,12 @@ class ControlSignatureSniff implements Sniff
 	}
 
 	/**
-	 * @param array   $tokens
+	 * @param array $tokens
 	 * @param integer $stackPtr
-	 * @param File    $phpcsFile
+	 * @param PHP_CodeSniffer_File $phpcsFile
 	 */
 	private function checkNewLineAfterClosingParenthesis(array $tokens, $stackPtr,
-													  File $phpcsFile)
+													  PHP_CodeSniffer_File $phpcsFile)
 	{
 		if (isset($tokens[$stackPtr]['parenthesis_closer']) === true && isset($tokens[$stackPtr]['scope_opener'])
 			=== true
@@ -166,10 +159,10 @@ class ControlSignatureSniff implements Sniff
 	/**
 	 * @param array $tokens
 	 * @param integer $stackPtr
-	 * @param File $phpcsFile
+	 * @param PHP_CodeSniffer_File $phpcsFile
 	 */
 	private function checkNewLineAfterOpeningBrace(array $tokens, $stackPtr,
-												$phpcsFile)
+												PHP_CodeSniffer_File $phpcsFile)
 	{
 		if (isset($tokens[$stackPtr]['scope_opener']) === true)
 		{
@@ -212,10 +205,10 @@ class ControlSignatureSniff implements Sniff
 	 * @param array $tokens
 	 * @param integer $pointer
 	 * @param string $pointerName
-	 * @param File $phpcsFile
+	 * @param PHP_CodeSniffer_File $phpcsFile
 	 */
 	private function checkNewLineAfterPointer(array $tokens, $pointer,
-										   $pointerName, File $phpcsFile)
+										   $pointerName, PHP_CodeSniffer_File $phpcsFile)
 	{
 		for ($next = ($pointer + 1); $next < $phpcsFile->numTokens; $next++)
 		{
@@ -228,7 +221,7 @@ class ControlSignatureSniff implements Sniff
 			}
 
 			// Skip all empty tokens on the same line as the opener.
-			if ($tokens[$next]['line'] === $tokens[$pointer]['line'] && isset(Tokens::$emptyTokens[$code])
+			if ($tokens[$next]['line'] === $tokens[$pointer]['line'] && isset(PHP_CodeSniffer_Tokens::$emptyTokens[$code])
 				=== true
 			)
 			{
