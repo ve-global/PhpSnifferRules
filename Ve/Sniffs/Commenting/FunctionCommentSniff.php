@@ -576,7 +576,7 @@ class FunctionCommentSniff extends OtherFunctionCommentSniff
 					// method.
 					if ($currVar === null)
 					{
-						continue;
+						break;
 					}
 
 					$vars[$paramCount] = array();
